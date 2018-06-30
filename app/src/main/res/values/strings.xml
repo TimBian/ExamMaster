@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ExamMaster</string>
+    <string name="title_text">單字王</string>
+    <string name="login_button">FB登入</string>
+    <string name="play_button">開始遊戲</string>
+    <string name="ranking_button">排行榜</string>
+    <string name="count_text">第一題</string>
+    <string name="question_text">題目敘述</string>
+</resources>
