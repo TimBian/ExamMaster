@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class GameActivity extends Activity implements View.OnClickListener {
 
@@ -166,7 +167,13 @@ public class GameActivity extends Activity implements View.OnClickListener {
         QA next;
         List<Integer> list;
 
-        next = exam.get(questionNumber++);
+        Random random = new Random();
+        int ranNum = random.nextInt(exam.size());
+
+        next = exam.get(ranNum);
+        exam.remove(ranNum);
+
+        questionNumber++;
         list = new ArrayList<Integer>(Arrays.asList(0, 1, 2, 3));
         Collections.shuffle(list); // randomize the order of 4 answers
 
