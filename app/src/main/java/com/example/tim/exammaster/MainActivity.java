@@ -36,7 +36,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
         }
         else if(v.getId() == R.id.rankingButton) {
-
+            Intent it = new Intent(this, RankingActivity.class);
+            startActivity(it);
         }
     }
 }

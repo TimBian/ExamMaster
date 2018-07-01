@@ -134,7 +134,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 {"清楚的、易懂的", "lucid", "salient", "vendetta", "cataclysm"}
         };
         /*
-                    
+
          */
         exam = new ArrayList<>();
         for(String[] set: data) {
@@ -179,9 +179,11 @@ public class GameActivity extends Activity implements View.OnClickListener {
     }
     // INCOMPLETE
     private void gameOver() {
+
+        int score = rightNumber*2 - wrongNumber*1;
         // update the ranking
         result.setTitle("遊戲結束")
-                .setMessage("您總共\n答對 "+rightNumber+" 題\n答錯 "+wrongNumber+"題!")
+                .setMessage("您總共\n答對 "+rightNumber+" 題\n答錯 "+wrongNumber+"題!\n分數: "+score)
                 .setNegativeButton("返回首頁", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
