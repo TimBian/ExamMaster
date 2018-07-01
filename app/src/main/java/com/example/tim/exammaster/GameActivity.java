@@ -90,20 +90,6 @@ public class GameActivity extends Activity implements View.OnClickListener {
         }
         // result setup
         result = new AlertDialog.Builder(this);
-        result.setTitle("遊戲結束")
-                .setMessage("您總共\n答對 "+rightNumber+" 題\n答錯 "+wrongNumber+"題!")
-                .setNegativeButton("返回首頁", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .setPositiveButton("再玩一場", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                        startActivity(getIntent());
-                    }
-                })
-                .setCancelable(false);
 
         setup(); // load questions
         timer.start();
@@ -147,7 +133,9 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 {"窮困潦倒的", "indigent", "brevity", "stigma", "adroit"},
                 {"清楚的、易懂的", "lucid", "salient", "vendetta", "cataclysm"}
         };
-
+        /*
+                    
+         */
         exam = new ArrayList<>();
         for(String[] set: data) {
             QA qa = new QA();
@@ -192,6 +180,20 @@ public class GameActivity extends Activity implements View.OnClickListener {
     // INCOMPLETE
     private void gameOver() {
         // update the ranking
+        result.setTitle("遊戲結束")
+                .setMessage("您總共\n答對 "+rightNumber+" 題\n答錯 "+wrongNumber+"題!")
+                .setNegativeButton("返回首頁", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .setPositiveButton("再玩一場", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        startActivity(getIntent());
+                    }
+                })
+                .setCancelable(false);
 
         result.show();
     }
