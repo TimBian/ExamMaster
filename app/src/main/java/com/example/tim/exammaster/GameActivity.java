@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+
 public class GameActivity extends Activity implements View.OnClickListener {
     ImageView profile;
     AlertDialog.Builder quitGame;
@@ -32,6 +33,9 @@ public class GameActivity extends Activity implements View.OnClickListener {
     Button[] answer;
     SQLiteDatabase db;
 
+    /**
+     * QA is a set of question
+     */
     public class QA {
         String question;
         String answer[]; // answer[0] is the only one correct answer
@@ -86,6 +90,9 @@ public class GameActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
+    /**
+     * In this function, we set up the timer
+     */
     public void onStart() {
         super.onStart();
         timer = new CountDownTimer(millisRemaining+100,1000){
@@ -97,7 +104,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
             }
             @Override
             public void onTick(long millisUntilFinished) {
-                time.setText("" + millisUntilFinished/1000);
+                time.setText("" + millisUntilFinished/1000);  //Change the unit to "second"
                 millisRemaining = millisUntilFinished;
                 Log.d("onTick", millisUntilFinished + ""); //  DEBUG only
             }
@@ -146,9 +153,11 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 {"窮困潦倒的", "indigent", "brevity", "stigma", "adroit"},
                 {"清楚的、易懂的", "lucid", "salient", "vendetta", "cataclysm"}
         };
-        /*
 
-         */
+/**
+ * In the following, we add the questions into an arraylist, "exam"
+ */
+
         exam = new ArrayList<>();
         for(String[] set: data) {
             QA qa = new QA();
@@ -165,6 +174,10 @@ public class GameActivity extends Activity implements View.OnClickListener {
         millisRemaining = 10000;
     }
 
+    /**
+     * Use the variable "ranNum" to make the question different every time.
+     * Use the function "shuffle()" to disorganise the arraylist of the questions.
+     */
     public void nextQuestion() {
         QA next;
         List<Integer> list;
@@ -180,9 +193,9 @@ public class GameActivity extends Activity implements View.OnClickListener {
         Collections.shuffle(list); // randomize the order of 4 answers
 
         count.setText("第"+questionNumber+"題");
-        question.setText(next.question);
+        question.setText(next.question);                //print the question
 
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < 4; i++) {                       //print the four  choices
             answer[i].setBackgroundColor(Color.WHITE);
             answer[i].setText(next.answer[list.get(i)]);
             answer[i].setEnabled(true);
@@ -191,7 +204,12 @@ public class GameActivity extends Activity implements View.OnClickListener {
             }
         }
     }
-    // INCOMPLETE
+
+    /**
+     * In this function, we use an AlertDialog to print out the information of the user's performance, including the numbers of right and wrong,
+     * and the score the user get. And it also let the user to choose whether play again or quit the game.
+     *
+     */
     private void gameOver() {
         int score = rightNumber*2 - wrongNumber*1;
         // update the ranking
@@ -219,9 +237,13 @@ public class GameActivity extends Activity implements View.OnClickListener {
         result.show();
     }
 
+    /**
+     * This function is used to define what the buttons should do as push if
+     * @param v the button we push
+     */
     public void onClick(View v) {
         if (v.getId() == R.id.profileImage) {
-            quitGame.show();
+            quitGame.show();   //quitGame is defined above
         }
         else {
             for(int i = 0; i < 4; i++) {
@@ -237,8 +259,9 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 chose.setBackgroundColor(Color.RED);
                 right.setBackgroundColor(Color.GREEN);
             }
-            // CAN NOT FULLY UNDERSTAND
+
             Handler handler = new Handler();
+            //After each question, it will delay a second
             handler.postDelayed(new Runnable(){
                 public void run(){
                     nextQuestion();

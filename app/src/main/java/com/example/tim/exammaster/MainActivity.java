@@ -37,8 +37,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
         db.execSQL(createTable);
         db.close();
     }
-    // INCOMPLETE
+
     @Override
+    /**
+     * This function is used to
+     */
     public void onClick(View v) {
         if(v.getId() == R.id.playButton) {
             Intent it = new Intent(this, GameActivity.class);
