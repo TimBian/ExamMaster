@@ -2,7 +2,10 @@ package com.example.tim.exammaster;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -20,7 +23,6 @@ import java.util.List;
 import java.util.Random;
 
 public class GameActivity extends Activity implements View.OnClickListener {
-
     ImageView profile;
     AlertDialog.Builder quitGame;
     TextView time;
@@ -28,7 +30,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
     TextView count;
     TextView question;
     Button[] answer;
-    AlertDialog.Builder result;
+    SQLiteDatabase db;
 
     public class QA {
         String question;
@@ -39,6 +41,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
     int questionNumber = 0;
     int rightNumber = 0;
     int wrongNumber = 0;
+    long millisRemaining;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,20 +66,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 .setCancelable(true);
         // timeText init
         time = findViewById(R.id.timeText);
-        // timer setup
-        timer = new CountDownTimer(10100,1000){
-            @Override
-            public void onFinish() {
-                time.setTextColor(Color.RED);
-                time.setText("0");
-                gameOver();
-            }
-            @Override
-            public void onTick(long millisUntilFinished) {
-                time.setText("" + millisUntilFinished/1000);
-                Log.d("onTick", millisUntilFinished + "");
-            }
-        };
+
         // countText init
         count = findViewById(R.id.countText);
         // questionText init
@@ -88,14 +78,38 @@ public class GameActivity extends Activity implements View.OnClickListener {
             answer[i] = findViewById(answerButton_id[i]);
             answer[i].setOnClickListener(this);
         }
-        // result setup
-        result = new AlertDialog.Builder(this);
 
-        setup(); // load questions
-        timer.start();
+        db = openOrCreateDatabase(MainActivity.DATABASE_NAME, Context.MODE_PRIVATE, null);
+
+        setup();
         nextQuestion();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        timer = new CountDownTimer(millisRemaining+100,1000){
+            @Override
+            public void onFinish() {
+                time.setTextColor(Color.RED);
+                time.setText("0");
+                gameOver();
+            }
+            @Override
+            public void onTick(long millisUntilFinished) {
+                time.setText("" + millisUntilFinished/1000);
+                millisRemaining = millisUntilFinished;
+                Log.d("onTick", millisUntilFinished + ""); //  DEBUG only
+            }
+        };
+        timer.start();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        timer.cancel();
+    }
     @Override
     public void onBackPressed() {
         quitGame.show();
@@ -104,9 +118,8 @@ public class GameActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (timer != null) {
-            timer.cancel();
-        }
+        timer.cancel();
+        db.close();
     }
 
     // IMCOMPLETE
@@ -139,16 +152,17 @@ public class GameActivity extends Activity implements View.OnClickListener {
         exam = new ArrayList<>();
         for(String[] set: data) {
             QA qa = new QA();
-            qa.question = new String(set[0]);
+            qa.question = set[0];
             qa.answer = new String[4];
             for(int j = 0; j < 4; j++) {
-                qa.answer[j] = new String(set[j+1]);
+                qa.answer[j] = set[j + 1];
             }
             exam.add(qa);
         }
         questionNumber = 0;
         rightNumber = 0;
         wrongNumber = 0;
+        millisRemaining = 10000;
     }
 
     public void nextQuestion() {
@@ -162,7 +176,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
         exam.remove(ranNum);
 
         questionNumber++;
-        list = new ArrayList<Integer>(Arrays.asList(0, 1, 2, 3));
+        list = new ArrayList<>(Arrays.asList(0, 1, 2, 3));
         Collections.shuffle(list); // randomize the order of 4 answers
 
         count.setText("第"+questionNumber+"題");
@@ -179,11 +193,16 @@ public class GameActivity extends Activity implements View.OnClickListener {
     }
     // INCOMPLETE
     private void gameOver() {
-
-        int score = rightNumber*2 - wrongNumber*1;
+        int score = rightNumber*10 - wrongNumber*5;
         // update the ranking
+        ContentValues cv = new ContentValues(1);
+        cv.put("score", score);
+        db.insert(MainActivity.TABLE_NAME, null, cv);
+
+        AlertDialog.Builder result;
+        result = new AlertDialog.Builder(this);
         result.setTitle("遊戲結束")
-                .setMessage("您總共\n答對 "+rightNumber+" 題\n答錯 "+wrongNumber+"題!\n分數: "+score)
+                .setMessage("您總共\n答對 "+rightNumber+" 題\n答錯 "+wrongNumber+" 題\n分數: "+score)
                 .setNegativeButton("返回首頁", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
@@ -228,22 +247,4 @@ public class GameActivity extends Activity implements View.OnClickListener {
 
         }
     }
-    /*
-    public void onClick(DialogInterface dialog, int which) {
-        if (quitGame.equals(dialog)) {
-            if (which == DialogInterface.BUTTON_POSITIVE) {
-                finish();
-            } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-                dialog.cancel();
-            }
-        } else if (result.equals(dialog)) {
-            if (which == DialogInterface.BUTTON_POSITIVE) {
-                finish();
-                startActivity(getIntent());
-            } else if (which == DialogInterface.BUTTON_NEGATIVE) {
-                finish();
-            }
-        }
-    }
-    */
 }
