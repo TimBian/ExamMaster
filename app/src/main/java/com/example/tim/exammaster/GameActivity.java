@@ -193,7 +193,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
     }
     // INCOMPLETE
     private void gameOver() {
-        int score = rightNumber*10 - wrongNumber*5;
+        int score = rightNumber*2 - wrongNumber*1;
         // update the ranking
         ContentValues cv = new ContentValues(1);
         cv.put("score", score);
