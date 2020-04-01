@@ -12,18 +12,29 @@
         android:layout_height="wrap_content">
 
         <Button
+            android:id="@+id/MENU"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="BACK" />
+
+        <Button
             android:id="@+id/INDIVIDUAL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="個人Top 10" />
+            android:text="Your Top 7" />
 
         <Button
             android:id="@+id/ONLINE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="朋友排名" />
+            android:text="Friends"
+            android:visibility="invisible" />
 
     </LinearLayout>
 
@@ -50,14 +61,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/MENU"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:text="返回" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -56,13 +56,13 @@ public class GameActivity extends Activity implements View.OnClickListener {
         profile.setOnClickListener(this);
         //quitGame setup
         quitGame = new AlertDialog.Builder(this);
-        quitGame.setMessage("結束遊戲?")
-                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+        quitGame.setMessage("Quit this game?")
+                .setNegativeButton("NO", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 })
-                .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
@@ -90,9 +90,9 @@ public class GameActivity extends Activity implements View.OnClickListener {
     }
 
     @Override
-    /**
-     * In this function, we set up the timer
-     */
+    /*
+        *  In this function, we set up the timer
+        */
     public void onStart() {
         super.onStart();
         timer = new CountDownTimer(millisRemaining+100,1000){
@@ -154,9 +154,9 @@ public class GameActivity extends Activity implements View.OnClickListener {
                 {"清楚的、易懂的", "lucid", "salient", "vendetta", "cataclysm"}
         };
 
-/**
- * In the following, we add the questions into an arraylist, "exam"
- */
+        /*
+                * In the following, we add the questions into an arraylist, "exam"
+                */
 
         exam = new ArrayList<>();
         for(String[] set: data) {
@@ -192,7 +192,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
         list = new ArrayList<>(Arrays.asList(0, 1, 2, 3));
         Collections.shuffle(list); // randomize the order of 4 answers
 
-        count.setText("第"+questionNumber+"題");
+        count.setText("Q"+questionNumber);
         question.setText(next.question);                //print the question
 
         for(int i = 0; i < 4; i++) {                       //print the four  choices
@@ -211,7 +211,7 @@ public class GameActivity extends Activity implements View.OnClickListener {
      *
      */
     private void gameOver() {
-        int score = rightNumber*2 - wrongNumber*1;
+        int score = rightNumber*2 - wrongNumber;
         // update the ranking
         ContentValues cv = new ContentValues(1);
         cv.put("score", score);
@@ -219,14 +219,14 @@ public class GameActivity extends Activity implements View.OnClickListener {
 
         AlertDialog.Builder result;
         result = new AlertDialog.Builder(this);
-        result.setTitle("遊戲結束")
-                .setMessage("您總共\n答對 "+rightNumber+" 題\n答錯 "+wrongNumber+" 題\n分數: "+score)
-                .setNegativeButton("返回首頁", new DialogInterface.OnClickListener() {
+        result.setTitle("Game Over!")
+                .setMessage("Result:\nRight: "+rightNumber+"\nWrong: "+wrongNumber+"\nScore: "+score)
+                .setNegativeButton("Menu", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                     }
                 })
-                .setPositiveButton("再玩一場", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Replay", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         finish();
                         startActivity(getIntent());

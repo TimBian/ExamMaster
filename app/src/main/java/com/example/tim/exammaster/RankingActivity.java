@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class RankingActivity extends Activity implements View.OnClickListener{
 
-    static final int MAX = 10;
+    static final int MAX = 7;
     static final String[] FROM = new String[] {"score"};
 
     Button individual;
@@ -53,16 +53,16 @@ public class RankingActivity extends Activity implements View.OnClickListener{
         SimpleCursorAdapter cAdapter;
         cAdapter = new SimpleCursorAdapter(this, R.layout.item, cur, FROM, new int[]{R.id.score}, 0);
         score.setAdapter(cAdapter);
-        score.setVisibility(ListView.INVISIBLE);
+        score.setVisibility(ListView.VISIBLE);
 
 
-        String[] idx = new String[10];
-        for(int i = 0; i < 10; i++) {
+        String[] idx = new String[MAX];
+        for(int i = 0; i < MAX; i++) {
             idx[i] = "#"+(i+1);
         }
         ArrayAdapter<String> aAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, idx);
         index.setAdapter(aAdapter);
-        index.setVisibility(ListView.INVISIBLE);
+        index.setVisibility(ListView.VISIBLE);
     }
 
     @Override
@@ -74,12 +74,10 @@ public class RankingActivity extends Activity implements View.OnClickListener{
 
     public void onClick(View v) {
         if (v.getId() == R.id.INDIVIDUAL) {
-            score.setVisibility(ListView.VISIBLE);
-            index.setVisibility(ListView.VISIBLE);
+
         }
         else if(v.getId() == R.id.ONLINE) {
-            score.setVisibility(ListView.INVISIBLE);
-            index.setVisibility(ListView.INVISIBLE);
+
         }
         else{
             finish();
