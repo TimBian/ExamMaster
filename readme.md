@@ -1,3 +1,14 @@
-# GRE單字王
+# Exam Master(GRE version)
 
-此App目的為提供一個兼具娛樂及準備考試的一款作答小遊戲，由一連串隨機的選擇題組成，並在10秒內作答，考驗使用者對於字彙的中英連結程度。
+This is a simple game that helps user prepare english exams like GRE.
+
+## Prerequisites
+
+- Android Studio
+- Android SDK platform 28
+
+## Getting Started
+
+1. Download this project by cloning this repository.
+1. In Android Studio, open this project and run the app.
+1. Enjoy it on the Android emulator!
